@@ -61,6 +61,7 @@ done
 called /etc/flag. 'file' showed it as being plain ASCII and 'cat' returned the contents.
 
 fingers# *cat /etc/flag*
+```
 00000000  89 50 4e 47 0d 0a 1a 0a  00 00 00 0d 49 48 44 52  |.PNG........IHDR|
 00000010  00 00 01 0a 00 00 01 62  08 06 00 00 00 0e 6c 96  |.......b......l.|
 00000020  fe 00 00 00 09 70 48 59  73 00 00 0d d7 00 00 0d  |.....pHYs.......|
@@ -77,10 +78,12 @@ fingers# *cat /etc/flag*
 000000d0  dc c6 36 23 a7 bc 8e ca  a9 05 2f 93 b2 dc ca b0  |..6#....../.....|
 000000e0  1b 89 00 08 01 08 08 40  10 02 d8 d2 7b dc 22 82  |.......@....{.".|
 000000f0  42 49 ca 21 93 e7 40 26  cf 81 42 51 00 b9 b2 10  |BI.!..@&..BQ....|
+```
 
 ### I see columns, I load it up in Notepad++
 and used Column mode to quickly remove the addressing, extra spaces and the ASCII column. All we want here is the hex values. I didn't know of another way to do this at the time, so this seemed like the quickest route since I was running Kali in a VM on a windows Box. The result was something like this:
 
+```
 89 50 4e 47 0d 0a 1a 0a 00 00 00 0d 49 48 44 52
 00 00 01 0a 00 00 01 62 08 06 00 00 00 0e 6c 96
 fe 00 00 00 09 70 48 59 73 00 00 0d d7 00 00 0d
@@ -88,12 +91,13 @@ d7 01 42 28 9b 78 00 00 80 00 49 44 41 54 78 da
 ed 5d 77 5c 14 d7 13 ff ee 15 ee e8 1d 14 45 8a
 0d 2b 60 57 50 11 7b 43 63 d4 68 d4 58 a2 c6 68
 34 1a 13 4b d4 18 13 eb cf 68 2c 49 34 c5 c4 1a
+<removed>
+```
 
 I then used used 'xxd' to convert the hex output back into binary after exfiltrating it to my own machine
 *kali:$ xxd -r flag > ace_of_spades.png*
 
 The resulting md5sum of the png was accepted without further manipulation, which was nice.
-
 
 ## 7 of Diamonds
 <img src="7_of_diamonds.png" width="200">
@@ -129,6 +133,7 @@ There is another branch listed called 'nothing-to-see-here' mentioned in the con
 
 A snapshot of the output looks like this, with a few dozen hashes:
 
+```
 c3766bf7c1b61f2dc1a97e04b9b0af4b916ae417 commit 268
 eff56ac36868bf16d510fd5b8b9efa7fae46215f commit 270
 58edfba5346925bf6944c456b668ddc6d868c31b commit 272
@@ -144,7 +149,7 @@ edc50ccca8bae273bec5e33feb2b8db170431cec blob 18364
 7b836bb1b0227b82fe34a8570b6bd4e9b28b0c87 tree 38
 48e68b614bc7e8229a876b7b447bc6ea512349cc blob 9182
 <more hashes>
-
+```
 ### Looking at the hashes
 
 I created a quick 'for loop' to show the contents of all the hashes with 'git show', hoping something interesting would
@@ -156,6 +161,7 @@ I saved edc50_masterbranch.blob and 48e6_masterbranch.blob and then moved on to 
 
 The last piece of the PNG was in the commits inside of the 'nothing-to-see-here' branch. After a bunch of spam commits, there is one in particular with a bunch of base64 that was shown with a simple 'git log' command.
 
+```
 Commit 078859f48e777e35ee75c7880c8cb5eb1d03f667
 Author: Your Name <you@example.com>
 Date:   Mon Jan 27 17:57:37 2020 -0500
@@ -179,6 +185,7 @@ Date:   Mon Jan 27 17:57:37 2020 -0500
     +vKiVhaBGRjwvOrhIwLTEWazBQP6jsGVyze8G50nQ+GnnAmfEJh++d1kEZiZFe4NhQ9yJvhq79l1
     CFcu3wBN0/jwoy5o1qIBcudJCy9cpYaknhrk8gNMCz3EXmcuFornTCjxQ5Lbm/Bh6JYZQo4ZvwC3
     <removed>
+```
 
 ### Putting them together
 was fairly simple. The 'whats-this' file from 'master' was the first piece since it had the file signature on it, and the last piece was the base64 decoded part retrieved from the 'nothing-to-see-here' branch. It had the typical ending of the flags, which was metadata about the image. It also had IEND, which all PNGs have. The final, middle piece, (assuming it was the 'only middle') was placed in the middle. The files were stiched together quicky with 'cat' and the hash submitted successfully.
@@ -203,7 +210,7 @@ The mounted directory showed a 33 byte file called 10_of_hearts.png, but if you 
 
 My teammate asked me to take a look, so I did. I immediately thought of a file stream due to the different messages and the low file size. We played around with 'head' and 'tail' for a little bit, 
 
-<img src="tail_f.png" width="200">
+<img src="tail_f.png">
 
 Tail was showing the very end of a PNG file. We then tried 'head -c 100' and narrowed in on 'head -c 1050' which was the maximum amounts of bytes that could be read from the stream at once. This showed the typical PNG signature. So we were getting close.
 
