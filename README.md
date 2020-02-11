@@ -1,5 +1,7 @@
 # metasploitCTF2020
 
+
+
 <img src="3_of_spades.png" width="200">
 
 Someone else on my team popped port 25 and got hold of an /etc/passwd file, so I can't take credit for finding it. They kindly dumped some of the cracked hashes in our shared channel.
@@ -35,4 +37,4 @@ didn't take long, but the text was small and I was squinting and not really havi
 ![Image description](excel_xor.png)
 
 ### I spent the next 45 minutes looking for a tool to actually XOR the whole file with the key. 
-I never had to do this on a CTF before and I couldn't find anything that actually worked. A few tools claimed to do it, but none of the ones I tried accepted the key. I was probably using them wrong. Oh well. After some "XOR Online" google searches, I came across a tool called 'Cyberchef' that can not only decode a file you upload, given an XOR key, but it can actually find simple XOR keys like "MZMZMZ...". I came across CyberChef a while back, but it didn't enter my mind to use it. So, another lesson learned: You will quickly forget the best tool for the job :(
+I never had to do this on a CTF before and I couldn't find anything that actually worked. A few tools claimed to do it, but none of the ones I tried accepted the key. I was probably using them wrong. Oh well. After some "XOR Online" google searches, I came across a tool called 'Cyberchef' that can not only decode a file you upload, given an XOR key, but it can actually find simple XOR keys like "MZMZMZ...". I came across CyberChef a while back, but it didn't enter my mind to use it. So, another lesson learned: You will quickly forget the best tool for the job :( Once I XOR'd the file with CyberChef, the hash was accepted.
