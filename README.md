@@ -4,7 +4,7 @@
 
 This was the first CTF that my team 'LouisianaChowMein' played together. It was a lot of fun and a big learning experience. Working together is a lot more fun than I thought it would be, and I look forward to doing more team based CTFs. Overall, we scored 14th place out of the couple hundred(?) that got on the scoreboard.
 
-## 3 of Spades
+# 3 of Spades
 <img src="3_of_spades.png" width="200">
 
 Someone else on my team popped port 25 and got hold of an /etc/passwd file, so I can't take credit for finding the hashes. They kindly dumped some of the cracked hashes in our shared channel.
@@ -39,7 +39,7 @@ I figured I'd read a little bit more about Ken Thompson and came across some ran
 ### I spent the next 45 minutes looking for a tool to actually XOR the whole file with the key. 
 I never had to do this on a CTF before and I couldn't find anything that actually worked. A few tools claimed to be able to do it, but none of the ones I tried spat out a readable file. I was probably using them wrong. Oh well. After some "XOR Online" google searches, I came across a tool called 'Cyberchef' that can not only decode a file you upload, given an XOR key, but it can actually find simple XOR keys like "MZMZMZ...". More time wasted, oh well. I came across CyberChef a while back, but it didn't enter my mind to use it. So, another lesson learned: You will quickly forget the best tool for the job. Once I XOR'd the file with CyberChef, the hash was accepted.
 
-## Ace of Spades
+# Ace of Spades
 <img src="ace_of_spades.png" width="200">
 
 ### This card was also on 'finger'. 
@@ -99,10 +99,10 @@ I then used used 'xxd' to convert the hex output back into binary after exfiltra
 
 The resulting md5sum of the png was accepted without further manipulation, which was nice.
 
-## 7 of Diamonds
+# 7 of Diamonds
 <img src="7_of_diamonds.png" width="200">
 
-# This flag was also on finger!
+# Another flag was on finger!
 This was a bit tougher to solve. Probably more of a middle-finger, right? RIGHT???
 
 ### Anyway, the root folder had file called 'hai'. 
@@ -193,7 +193,7 @@ was fairly simple. The 'whats-this' file from 'master' was the first piece since
 *kali:$ cat whats-this.master whats-this.nothing b64_decoded.commit > 7_of_diamonds.png*
 
 
-## 10 of Hearts
+# 10 of Hearts
 <img src="10_of_hearts.png" width="200">
 
 ### Care for a mount?
