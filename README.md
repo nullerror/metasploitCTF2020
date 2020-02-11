@@ -207,7 +207,7 @@ The mounted directory showed a 33 byte file called 10_of_hearts.png, but if you 
 
 My teammate asked me to take a look, so I did. I immediately thought of a file stream due to the different messages and the low file size. We played around with 'head' and 'tail' for a little bit, 
 
-<img src="tail_f" width="200">
+<img src="tail_f.png" width="200">
 
 Tail was showing the very end of a PNG file. We then tried 'head -c 100' and narrowed in on 'head -c 1050' which was the maximum amounts of bytes that could be read from the stream at once. This showed the typical PNG signature. So we were getting close.
 
