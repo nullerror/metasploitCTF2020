@@ -7,7 +7,7 @@ This was the first CTF that my team 'LouisianaChowMein' played together. It was 
 ## 3 of Spades
 <img src="3_of_spades.png" width="200">
 
-Someone else on my team popped port 25 and got hold of an /etc/passwd file, so I can't take credit for finding it. They kindly dumped some of the cracked hashes in our shared channel.
+Someone else on my team popped port 25 and got hold of an /etc/passwd file, so I can't take credit for finding the hashes. They kindly dumped some of the cracked hashes in our shared channel.
 
 ### At this point, I kind of randomly just tried a few of the credentials 
 on various services and hit one for port 22. Just a little credential spraying, I suppose. I actually forgot which one got the initial foothold, and my note taking wasn't that good so my apologies :(
@@ -27,7 +27,7 @@ https://www.theregister.co.uk/2019/10/09/ken_thompsons_old_unix_password_cracked
 The page correctly revealed the password as "p/q2-q4!". Looks like someone just fat fingered an 'a' in the first page. Nice job, buddy :)
 
 ### After switching to 'ken' and rummaging through his personal stuff
-I found what I throught was the 3_of_spades.png. I thought this because that was the name of the file. I took the md5sum of it and the metasploit CTF flag page was not happy. Not to prematurely 'file' anything, I went back and did my business. I 'file'd the heck out of that file, and it was 'data'. Crap. Must be encrypted, or must be a sick joke. I tried a few of the common decryption methods with openssl and a few different passwords and tried using to root key from 'finger'. None of them worked. Next I created a little for/awk/sed/grep monstrosity loop in bash to grab all the openssl ciphers from openssl --help and try to decrypt it with a wordlist. Nothing worked and I kept getting an error about a magic number. It was taking too long anyway, so I figured that was a clue that dis was not dey way. 
+I found what I throught was the 3_of_spades.png. I thought this because that was the name of the file. I took the md5sum of it and the metasploit CTF flag page was not happy. I was not happy. Never one to prematurely 'file' anything, I went back and did my file business. I 'file'd the heck out of that file, and it was 'data'. Crap. Must be encrypted, or maybe just be a sick joke. I tried a few of the common decryption methods with openssl and a few different passwords and tried using to root key from 'finger'. None of them worked. Next I created a little for/awk/sed/grep monstrosity loop in bash to grab all the openssl ciphers from openssl --help and try to decrypt it with a wordlist. Nothing worked and I kept getting an error about a magic number. It was taking too long anyway, so I figured that was a clue that dis was not dey way. 
 
 ### Other voodoo is necessary here. 
 Side note, I also took a look at the file and noticed 'MZ' and thought it might be a mixed up DOS executable. I made a script to swap some bytes around just for the heck of it, but then my CTF brain told me to stop, there are no Windows boxes on this CTF.
@@ -37,17 +37,16 @@ I figured I'd read a little bit more about Ken Thompson and came across some ran
 ![Image description](excel_xor.png)
 
 ### I spent the next 45 minutes looking for a tool to actually XOR the whole file with the key. 
-I never had to do this on a CTF before and I couldn't find anything that actually worked. A few tools claimed to do it, but none of the ones I tried accepted the key. I was probably using them wrong. Oh well. After some "XOR Online" google searches, I came across a tool called 'Cyberchef' that can not only decode a file you upload, given an XOR key, but it can actually find simple XOR keys like "MZMZMZ...". More time wasted, oh well. I came across CyberChef a while back, but it didn't enter my mind to use it. So, another lesson learned: You will quickly forget the best tool for the job. Once I XOR'd the file with CyberChef, the hash was accepted.
+I never had to do this on a CTF before and I couldn't find anything that actually worked. A few tools claimed to be able to do it, but none of the ones I tried spat out a readable file. I was probably using them wrong. Oh well. After some "XOR Online" google searches, I came across a tool called 'Cyberchef' that can not only decode a file you upload, given an XOR key, but it can actually find simple XOR keys like "MZMZMZ...". More time wasted, oh well. I came across CyberChef a while back, but it didn't enter my mind to use it. So, another lesson learned: You will quickly forget the best tool for the job. Once I XOR'd the file with CyberChef, the hash was accepted.
 
 ## Ace of Spades
 <img src="ace_of_spades.png" width="200">
 
-
 ### This card was also on 'finger'. 
-While solving the previous card, I mentioned that this box had OpenSMTPD running on localhost as root. I circuled back around to this and did a little google searching for vulnerabilities and hit a clear winner here: https://seclists.org/oss-sec/2020/q1/40. After verifying that the process was exploitable, I ended up using RCE to call a bash script that launced a reverse shell to my attacking machine, as root. It may have been possible to do inline, but there were a lot of issues with escaping characters that I did not want to deal with.
+While solving the previous card, I mentioned that this box had OpenSMTPD running on localhost as root. I circled back around to this and did a little google searching for vulnerabilities and hit a clear winner here: https://seclists.org/oss-sec/2020/q1/40. After verifying that the process was exploitable, I ended up using RCE to call a bash script that launced a reverse shell to my attacking machine, as root. It may have been possible to do inline, but there were a lot of issues with escaping characters that I did not want to deal with.
 
 ### I'm not actually sure 
-that this particular file wasn't accessable by the previous guy, 'ken' or even the first guy I got the initial foothold with. Either way, it's nicer to to be root when checking the entire file system for something, so the first thing I did was create a script too run 'xxd' against all files on the drive, looking for the PNG header bytes. That's a lie, the first thing I did was type 'whoami' and had an exestential crisis for about 10 seconds. After that, I probably looked around for .png files and files with the names of card suits in them. Then I realised if I really wanted to find what I was looking for, I'd need to go straight for the file signature. Like any good hacker, I started writing a script and then thought, "I bet someone already did this..." and quickly found one that was already ready for use.
+that this particular file wasn't accessable by the previous guy, 'ken' or even the first guy I got the initial foothold with. Either way, it's nicer to to be root when checking the entire file system for something, so the first thing I did was create a script to run 'xxd' against all files on the drive, looking for the PNG header bytes. That's a lie, the first thing I did was type 'whoami' and had an exestential crisis for about 10 seconds. After that, I probably looked around for .png files and files with the names of card suits in them. Then I realised if I really wanted to find what I was looking for, I'd need to go straight for the file signature. Like any good scripter, I started writing a script and then thought, "I bet someone already did this..." and quickly found one that was already ready for use.
 
 ### A "script", the most primitive form of life.
 #!/bin/sh
@@ -58,7 +57,7 @@ find / -type f | while read fname; do
   fi;
 done
 
-### The script found an ASCII file
+### Oh... The script found an ASCII file
 called /etc/flag. 'file' showed it as being plain ASCII and 'cat' returned the contents.
 
 fingers# *cat /etc/flag*
@@ -122,11 +121,9 @@ At this point I moved on to make more progress on some of the other cards that I
 
 ### Take a look at .git/config
 
-There is another branch listed called 'nothing-to-see-here' mentioned in the config file. I took note of that for later. For now, I wanted to check through the 'master' branch and see if there were any other clues. I tried 'git log' but there was only one commit for master displayed. Next I did a  'git rev-list --all' and it showed more hashes so there was obviously more stuff here.
+There is another branch listed called 'nothing-to-see-here' mentioned in the config file. I took note of that for later. I'm no betting man, but I bet to myself, 'self, I bet that there IS something to see there'. For now, I wanted to check through the 'master' branch and see if there were any other clues. I tried 'git log' but there was only one commit for master. Next I did a  'git rev-list --all' and it showed more hashes so there was obviously more stuff here.
 
 ### Must be some blobs and trees?
-
-I hit the motherlode with the below command:
 
 *kali:$ git cat-file --batch-check --batch-all-objects --unordered*
 
@@ -150,12 +147,12 @@ edc50ccca8bae273bec5e33feb2b8db170431cec blob 18364
 
 ### Looking at the hashes
 
-I created a quick for loop to show the contents of all the hashes with 'git show', hoping something interesting would
+I created a quick 'for loop' to show the contents of all the hashes with 'git show', hoping something interesting would
 pop out. Two of the hashes in this branch (the two starting with edc50 and 48e6) had some interesting content that looked like "part of a file, maybe".
 
-I saved edc50_masterbranch.blob and 48e6_masterbranch.blob and moved to the 'nothing-to-see-here' branch. It had the same two hashes, and after saving the files and running 'diff' against them and the files from the master branch, showed that they were the same.
+I saved edc50_masterbranch.blob and 48e6_masterbranch.blob and then moved on to the 'nothing-to-see-here' branch. It had the same two hashes, and after saving the files and running 'diff' against them and the files from the master branch, showed that they were the same.
 
-### The final piece
+### The final(?) piece
 
 The last piece of the PNG was in the commits inside of the 'nothing-to-see-here' branch. After a bunch of spam commits, there is one in particular with a bunch of base64 that was shown with a simple 'git log' command.
 
@@ -187,7 +184,6 @@ Date:   Mon Jan 27 17:57:37 2020 -0500
 was fairly simple. The 'whats-this' file from 'master' was the first piece since it had the file signature on it, and the last piece was the base64 decoded part retrieved from the 'nothing-to-see-here' branch. It had the typical ending of the flags, which was metadata about the image. It also had IEND, which all PNGs have. The final, middle piece, (assuming it was the 'only middle') was placed in the middle. The files were stiched together quicky with 'cat' and the hash submitted successfully.
 
 *kali:$ cat whats-this.master whats-this.nothing b64_decoded.commit > 7_of_diamonds.png*
-
 
 
 ## 10 of Hearts
