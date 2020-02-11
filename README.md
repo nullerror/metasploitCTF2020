@@ -1,6 +1,8 @@
 # metasploitCTF2020
 
+<img src="results.png">
 
+This was the first CTF that my team 'LouisianaChowMein' played together. It was a lot of fun and a big learning experience. Working together is a lot more fun than I thought it would be, and I look forward to doing more team based CTFs. Overall, we scored 14th place out of the couple hundred(?) that got on the scoreboard.
 
 <img src="3_of_spades.png" width="200">
 
